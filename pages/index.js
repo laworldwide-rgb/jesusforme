@@ -16,10 +16,10 @@ const TIERS = {
     chatSub: "No question is too small. God loves your questions!",
     prayerSub: "God loves to hear your voice — like a dad loves hearing from his kids.",
     hi: "Hi friend! 😊 I'm so happy you're here! Ask me anything about God or the Bible. I love your questions!",
-    systemPrompt: `You are Prof. J.R. Lewis, a warm seminary professor, but right now you are speaking with a child aged 4–6 years old. 
-Your name in this conversation is Sunny.
-Speak exactly like Fred Rogers — gentle, unhurried, full of wonder. 
+    systemPrompt: `You are a warm, gentle Bible guide speaking with a child aged 4–6 years old.
+Speak exactly like Fred Rogers — gentle, unhurried, full of wonder.
 Use the simplest possible words. Very short sentences. Never scary.
+Never refer to yourself by name. Simply answer warmly and directly.
 Every answer must end with the Gospel: God loves this child unconditionally, and Jesus came just for them.
 You hold to Luther's Law/Gospel distinction. All Scripture points to Jesus.
 Never be preachy. Be warm, like a kind grandparent kneeling down to a child's level.
@@ -36,10 +36,10 @@ Keep all answers to 3-5 short sentences maximum.`,
     chatSub: "Great questions lead to great discoveries. Ask away!",
     prayerSub: "Talk to God about anything — He really is listening.",
     hi: "Hey! 👋 Ask me anything — about God, the Bible, or why things are the way they are. No question is too hard!",
-    systemPrompt: `You are Prof. J.R. Lewis, a warm seminary professor, speaking with a child aged 7–10 years old.
-Your name in this conversation is River.
+    systemPrompt: `You are a warm, curious Bible guide speaking with a child aged 7–10 years old.
 Be curious together with them. Use stories and analogies they can picture.
 Welcome every question — there are no dumb questions here.
+Never refer to yourself by name. Simply answer warmly and directly.
 Go a bit deeper than surface answers. Connect things to everyday life.
 Always answer honestly, and always point back to Jesus and the Gospel.
 You hold to Luther's Law/Gospel distinction. All Scripture points to Christ.
@@ -56,10 +56,10 @@ Keep answers warm, interesting, and under 150 words.`,
     chatSub: "Hard questions are welcome here. Real faith can handle them.",
     prayerSub: "Honest prayer is the bravest thing you can do.",
     hi: "Welcome. This is a space for real questions — the kind you might be afraid to ask out loud. What's on your mind?",
-    systemPrompt: `You are Prof. J.R. Lewis, a world-class seminary professor, speaking with a young person aged 11–14.
-Your name in this conversation is Logos.
+    systemPrompt: `You are a thoughtful, honest Bible guide speaking with a young person aged 11–14.
 Respect their intelligence completely. Do not talk down to them.
 Take their doubts seriously — doubts are part of honest faith, not the enemy of it.
+Never refer to yourself by name. Simply answer directly and thoughtfully.
 Be honest about hard things: suffering, evil, death, unanswered prayer.
 Always anchor in the Gospel — Jesus, the cross, the resurrection.
 You hold to Luther's Law/Gospel distinction and believe all Scripture points to Christ.
@@ -227,6 +227,7 @@ export default function Home() {
   const [tier, setTier] = useState("l");
   const [tab, setTab] = useState("stories");
   const [storyKey, setStoryKey] = useState(null);
+  const [childName, setChildName] = useState("");
 
   // Chat state
   const [messages, setMessages] = useState([]);
@@ -262,7 +263,10 @@ export default function Home() {
   // Init chat when entering tier
   function enterTier(t) {
     setTier(t);
-    setMessages([{ from: "bot", text: TIERS[t].hi }]);
+    const greeting = childName.trim()
+      ? TIERS[t].hi.replace("Hi friend!", `Hi ${childName.trim()}!`).replace("Hey!", `Hey ${childName.trim()}!`).replace("Welcome.", `Welcome, ${childName.trim()}.`)
+      : TIERS[t].hi;
+    setMessages([{ from: "bot", text: greeting }]);
     setShowSugg(true);
     setTab("stories");
     setStoryKey(null);
@@ -270,6 +274,11 @@ export default function Home() {
   }
 
   // ── API CALL ──
+  function buildPrompt(systemPrompt) {
+    if (!childName.trim()) return systemPrompt;
+    return systemPrompt + `\n\nThe child\'s name is ${childName.trim()}. Use their name naturally and warmly in conversation, like Mr. Rogers would — occasionally, not constantly.`;
+  }
+
   async function callAPI(systemPrompt, userMessage, history = []) {
     const apiMessages = [
       ...history.map((m) => ({
@@ -733,6 +742,10 @@ export default function Home() {
         .quote-box { background: linear-gradient(135deg,#f4eeff,#ede0ff); border-radius: 12px; padding: 1rem; text-align: center; font-size: 0.85rem; color: #6a35d6; font-style: italic; line-height: 1.7; margin-top: 0.5rem; }
         .modal-footer { padding: 1rem 1.5rem; border-top: 2px solid #f0f0f0; flex-shrink: 0; }
         .btn-close-modal { width: 100%; padding: 0.8rem; background: linear-gradient(160deg,#ff6b8a,#e8304a); border: none; border-radius: 16px; font-family: "Fredoka One", cursive; font-size: 1rem; color: white; cursor: pointer; box-shadow: 0 5px 0 #a01030; }
+        .name-field-wrap { margin-bottom: 1.2rem; }
+        .name-label { font-family: "Fredoka One", cursive; font-size: 1rem; color: white; text-shadow: 0 2px 6px rgba(0,80,140,0.35); display: block; margin-bottom: 0.5rem; }
+        .name-input { width: 100%; max-width: 280px; border: none; border-radius: 20px; padding: 0.65rem 1.2rem; font-family: "Fredoka One", cursive; font-size: 1.05rem; color: #333; text-align: center; outline: none; box-shadow: 0 4px 14px rgba(0,0,0,0.15), inset 0 2px 4px rgba(0,0,0,0.05); background: rgba(255,255,255,0.92); }
+        .name-input::placeholder { color: #bbb; font-family: "Nunito", sans-serif; font-size: 0.95rem; }
         .help-btn { background: rgba(255,255,255,0.25); border: 2px solid rgba(255,255,255,0.6); border-radius: 20px; padding: 0.4rem 1.1rem; font-family: "Fredoka One", cursive; font-size: 0.88rem; color: white; cursor: pointer; margin-bottom: 1rem; display: inline-block; }
 
         ::-webkit-scrollbar { width: 4px; }
@@ -751,6 +764,17 @@ export default function Home() {
             </div>
             <span className="heart">✝️</span>
             <p className="wp">Who&apos;s reading today?</p>
+            <div className="name-field-wrap">
+              <label className="name-label">What&apos;s your name?</label>
+              <input
+                className="name-input"
+                type="text"
+                placeholder="Type your name..."
+                value={childName}
+                onChange={(e) => setChildName(e.target.value)}
+                maxLength={30}
+              />
+            </div>
             <div className="tier-cards">
               {[
                 ["l", "🌱", "Little Ones", "Ages 4–6", "tc-l"],
@@ -786,7 +810,7 @@ export default function Home() {
         <div className={`child-screen ${TIERS[tier].bg}`}>
           <div className={`top-bar ${TIERS[tier].topbar}`}>
             <span className="tb-logo">Jesus FOR ME!</span>
-            <span className="tb-tier">{TIERS[tier].label}</span>
+            <span className="tb-tier">{childName.trim() ? `${childName.trim()} · ${TIERS[tier].label}` : TIERS[tier].label}</span>
             <button className="btn-home" onClick={() => setScreen("welcome")}>
               🏠 Home
             </button>
@@ -1062,7 +1086,7 @@ export default function Home() {
                   {prayerSent ? (
                     <div className="prayer-sent">
                       <span style={{ fontSize: "3rem", display: "block", marginBottom: "1rem" }}>🕊️</span>
-                      <div className="prayer-heard">Your prayer is heard.</div>
+                      <div className="prayer-heard">{childName.trim() ? `${childName.trim()}, your prayer is heard.` : "Your prayer is heard."}</div>
                       <div className="prayer-verse">
                         &quot;The Lord is near to all who call on him.&quot; — Psalm 145:18
                       </div>
