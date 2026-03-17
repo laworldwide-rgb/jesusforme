@@ -251,6 +251,9 @@ export default function Home() {
   const [explainLoading, setExplainLoading] = useState(false);
   const [explainResult, setExplainResult] = useState("");
 
+  // Guide modal state
+  const [guideOpen, setGuideOpen] = useState(false);
+
   // Scroll chat to bottom
   useEffect(() => {
     msgsEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -705,6 +708,33 @@ export default function Home() {
         .prog-wrap { background: rgba(0,0,0,0.07); border-radius: 10px; height: 8px; margin-top: 0.4rem; overflow: hidden; }
         .prog-fill { height: 100%; border-radius: 10px; }
 
+
+        /* GUIDE MODAL */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
+        .modal-box { background: white; border-radius: 24px; max-width: 580px; width: 100%; max-height: 88vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.25); overflow: hidden; }
+        .modal-header { background: linear-gradient(135deg,#ff6b6b,#e83050); padding: 1.5rem; text-align: center; flex-shrink: 0; }
+        .modal-header h2 { font-family: "Fredoka One", cursive; font-size: 1.8rem; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .modal-header p { font-size: 0.85rem; color: rgba(255,255,255,0.85); margin-top: 0.3rem; font-weight: 700; }
+        .modal-body { overflow-y: auto; padding: 1.5rem; flex: 1; }
+        .modal-section { margin-bottom: 1.5rem; }
+        .modal-section h3 { font-family: "Fredoka One", cursive; font-size: 1.1rem; color: #e8304a; margin-bottom: 0.6rem; border-bottom: 2px solid #fff0c8; padding-bottom: 0.3rem; }
+        .modal-section p { font-size: 0.88rem; line-height: 1.7; color: #444; margin-bottom: 0.6rem; }
+        .modal-section ul { padding-left: 1.2rem; }
+        .modal-section ul li { font-size: 0.88rem; line-height: 1.7; color: #444; margin-bottom: 0.3rem; }
+        .tier-table { width: 100%; border-collapse: collapse; margin-bottom: 0.8rem; }
+        .tier-table th { font-family: "Fredoka One", cursive; font-size: 0.82rem; color: #888; text-align: left; padding: 0.4rem 0.6rem; background: #f8f8f8; }
+        .tier-table td { font-size: 0.85rem; padding: 0.5rem 0.6rem; border-top: 1px solid #f0f0f0; color: #444; line-height: 1.5; }
+        .feature-row { display: flex; gap: 0.8rem; margin-bottom: 0.7rem; align-items: flex-start; }
+        .feature-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.1rem; }
+        .feature-text strong { font-family: "Fredoka One", cursive; font-size: 0.95rem; color: #333; display: block; margin-bottom: 0.2rem; }
+        .feature-text span { font-size: 0.84rem; color: #666; line-height: 1.6; }
+        .tip-box { background: linear-gradient(135deg,#fff8e4,#fff0c8); border-radius: 12px; padding: 0.9rem 1rem; margin-bottom: 0.6rem; border-left: 4px solid #ffa800; font-size: 0.85rem; color: #555; line-height: 1.6; }
+        .tip-box strong { color: #e8304a; }
+        .quote-box { background: linear-gradient(135deg,#f4eeff,#ede0ff); border-radius: 12px; padding: 1rem; text-align: center; font-size: 0.85rem; color: #6a35d6; font-style: italic; line-height: 1.7; margin-top: 0.5rem; }
+        .modal-footer { padding: 1rem 1.5rem; border-top: 2px solid #f0f0f0; flex-shrink: 0; }
+        .btn-close-modal { width: 100%; padding: 0.8rem; background: linear-gradient(160deg,#ff6b8a,#e8304a); border: none; border-radius: 16px; font-family: "Fredoka One", cursive; font-size: 1rem; color: white; cursor: pointer; box-shadow: 0 5px 0 #a01030; }
+        .help-btn { background: rgba(255,255,255,0.25); border: 2px solid rgba(255,255,255,0.6); border-radius: 20px; padding: 0.4rem 1.1rem; font-family: "Fredoka One", cursive; font-size: 0.88rem; color: white; cursor: pointer; margin-bottom: 1rem; display: inline-block; }
+
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.3); }
         ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.14); border-radius: 4px; }
@@ -738,6 +768,10 @@ export default function Home() {
                 </button>
               ))}
             </div>
+            <button className="help-btn" onClick={() => setGuideOpen(true)}>
+              📖 Parent Guide
+            </button>
+            <br />
             <button className="plink" onClick={() => setScreen("parent")}>
               🔑 Parent Space
             </button>
@@ -1211,6 +1245,110 @@ export default function Home() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════
+          PARENT GUIDE MODAL
+      ════════════════════════════════════ */}
+      {guideOpen && (
+        <div className="modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) setGuideOpen(false); }}>
+          <div className="modal-box">
+            <div className="modal-header">
+              <h2>Jesus FOR ME! 📖</h2>
+              <p>Parent Quick Start Guide</p>
+            </div>
+            <div className="modal-body">
+
+              <div className="modal-section">
+                <h3>Welcome!</h3>
+                <p>Every story, every conversation, and every feature points to one thing: <strong>Jesus loves your child unconditionally.</strong> This guide will help you get the most out of the app together.</p>
+              </div>
+
+              <div className="modal-section">
+                <h3>Choose Your Child&apos;s Door</h3>
+                <table className="tier-table">
+                  <thead><tr><th>Tier</th><th>Age</th><th>What it&apos;s like</th></tr></thead>
+                  <tbody>
+                    <tr><td>🌱 Little Ones</td><td>4–6</td><td>Simple words, big wonder, warm and gentle</td></tr>
+                    <tr><td>🌿 Growing Ones</td><td>7–10</td><td>Deeper questions, stories, real answers</td></tr>
+                    <tr><td>🌳 Big Kids</td><td>11–14</td><td>Honest, respectful, no dodging hard questions</td></tr>
+                  </tbody>
+                </table>
+                <p style={{fontSize:"0.82rem", color:"#999"}}>You can switch tiers anytime — just tap 🏠 Home.</p>
+              </div>
+
+              <div className="modal-section">
+                <h3>The Four Sections</h3>
+                <div className="feature-row">
+                  <div className="feature-icon">📖</div>
+                  <div className="feature-text">
+                    <strong>Stories</strong>
+                    <span>Six Gospel-centered Bible stories, each ending with <em>The Good News</em> — the thread connecting that story to Jesus. After reading, tap <em>Ask about this</em> or <em>Pray about this.</em></span>
+                  </div>
+                </div>
+                <div className="feature-row">
+                  <div className="feature-icon">💬</div>
+                  <div className="feature-text">
+                    <strong>Ask</strong>
+                    <span>A live AI chat that adapts completely to your child&apos;s age. Safe, Gospel-centered, and always kind. No question is too big or too small.</span>
+                  </div>
+                </div>
+                <div className="feature-row">
+                  <div className="feature-icon">⭐</div>
+                  <div className="feature-text">
+                    <strong>Verse</strong>
+                    <span>One memory verse at a time with a fill-in-the-blank quiz and streak tracker. Short, fun, and worth knowing forever.</span>
+                  </div>
+                </div>
+                <div className="feature-row">
+                  <div className="feature-icon">🙏</div>
+                  <div className="feature-text">
+                    <strong>Pray</strong>
+                    <span>Prayer starters to help your child begin, then space to write in their own words. A gentle reminder follows: <em>&quot;The Lord is near to all who call on him.&quot;</em></span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="modal-section">
+                <h3>🔑 Parent Space</h3>
+                <div className="tip-box">
+                  <strong>💡 Help Me Explain</strong> — Type any topic you&apos;re struggling to talk about: <em>&quot;Why did Jesus have to die?&quot;</em> or <em>&quot;What happens when someone we love dies?&quot;</em> Choose your child&apos;s age and Prof. Lewis will give you words to use, a question to ask, and a Bible verse. <em>This is the tool for 10pm when your child asks something that stops you cold.</em>
+                </div>
+                <div className="tip-box">
+                  <strong>📊 Dashboard</strong> — A snapshot of your children&apos;s activity: stories read, verses practiced, prayers written, and streaks.
+                </div>
+              </div>
+
+              <div className="modal-section">
+                <h3>Tips for Using It Together</h3>
+                <ul>
+                  <li>Read a story out loud together, then tap <em>Ask about this</em> and let your child drive the conversation</li>
+                  <li>Do the memory verse quiz at dinner — make it a family competition</li>
+                  <li>Read your child&apos;s prayer after they submit it — it will tell you what&apos;s on their heart</li>
+                  <li>Use <em>Help Me Explain</em> <strong>before</strong> a hard conversation, not just during one</li>
+                </ul>
+              </div>
+
+              <div className="modal-section">
+                <h3>Good to Know</h3>
+                <p><strong>Hard questions are welcome.</strong> If your 13-year-old asks &quot;Is God even real?&quot; the app won&apos;t panic or deflect. It engages honestly and with the Gospel in view.</p>
+                <p><strong>This app doesn&apos;t replace you.</strong> The best thing it can do is give your child a question to bring to <em>you.</em></p>
+                <p><strong>Everything points to Jesus.</strong> That&apos;s the one design decision that never changes.</p>
+              </div>
+
+              <div className="quote-box">
+                &quot;The whole Bible is really one Big Story — and at the center of it all is a baby. And the baby grew up... and He came to rescue us.&quot;<br/>
+                <strong style={{color:"#9b6ff5", fontStyle:"normal"}}>— Sally Lloyd Jones, The Jesus Storybook Bible</strong>
+              </div>
+
+            </div>
+            <div className="modal-footer">
+              <button className="btn-close-modal" onClick={() => setGuideOpen(false)}>
+                Got it! Let&apos;s go 🙌
+              </button>
+            </div>
           </div>
         </div>
       )}
