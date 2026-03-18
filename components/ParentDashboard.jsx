@@ -53,12 +53,10 @@ export default function ParentDashboard() {
 
       <br /><br />
 
-      {answer && (
-        <div>
-          <h3>Suggested Answer:</h3>
-          <p>{typeof answer === "string" ? answer : ""}</p>
-        </div>
-      )}
+<div>
+  <h3>Debug:</h3>
+  <p>{JSON.stringify(answer)}</p>
+</div>
 
       <hr />
 
