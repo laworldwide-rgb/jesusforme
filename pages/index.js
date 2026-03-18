@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ModeSelect from "../components/ModeSelect";
+import ParentDashboard from "../components/ParentDashboard";
 
 export default function Home() {
   const [mode, setMode] = useState(null);
@@ -8,5 +9,9 @@ export default function Home() {
     return <ModeSelect onSelect={setMode} />;
   }
 
-  return <div>Mode: {mode}</div>;
+  if (mode === "parent") {
+    return <ParentDashboard />;
+  }
+
+  return <div>Child mode coming next</div>;
 }
