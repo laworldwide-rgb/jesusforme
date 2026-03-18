@@ -1,3 +1,5 @@
+import ModeSelect from "../components/ModeSelect";
+
 export default function Home() {
-  return <div>SAFE TEST</div>;
+  return <ModeSelect onSelect={() => {}} />;
 }
