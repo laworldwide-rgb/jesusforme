@@ -33,10 +33,10 @@ Question: ${question}`,
       answer: data.content?.[0]?.text || "No response",
     });
   } catch (error) {
-    console.error("API ERROR:", error);
+  console.error("API ERROR:", error);
 
-    return res.status(500).json({
-      error: "Server error",
-    });
-  }
+  return res.status(500).json({
+    error: error.message || "Unknown error",
+  });
+}
 }
