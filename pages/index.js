@@ -902,7 +902,7 @@ export default function Home() {
                   <li>Use <em>Help Me Explain</em> before a hard conversation</li>
                 </ul>
               </div>
-              <div className="quote-box">&quot;The whole Bible is really one Big Story — and at the center of it all is a baby. And the baby grew up... and He came to rescue us.&quot;<br/><strong style={{color:var(--purple2),fontStyle:"normal"}}>— Sally Lloyd Jones</strong></div>
+              <div className="quote-box">&quot;The whole Bible is really one Big Story — and at the center of it all is a baby. And the baby grew up... and He came to rescue us.&quot;<br/><strong style={{color:"#5C3D8F",fontStyle:"normal"}}>— Sally Lloyd Jones</strong></div>
             </div>
             <div className="modal-ft">
               <button className="btn-close-modal" onClick={() => setGuideOpen(false)}>Got it! Let&apos;s go 🙌</button>
