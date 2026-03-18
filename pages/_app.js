@@ -1,27 +1,49 @@
-import '../styles/globals.css'
-import Head from 'next/head'
-import { useEffect } from 'react'
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
-export default function App({ Component, pageProps }) {
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('/sw.js')
-        .catch((err) => console.log('SW registration failed:', err));
+  const { question } = req.body;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: "claude-3-haiku-20240307",
+        max_tokens: 300,
+        messages: [
+          {
+            role: "user",
+            content: `You are helping a parent explain Christianity to a young child.
+
+Explain this in a simple, warm, child-friendly way:
+
+Question: ${question}`,
+          },
+        ],
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return res.status(500).json({
+        error: data.error?.message || "API request failed",
+      });
     }
-  }, []);
 
-  return (
-    <>
-      <Head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#E83050" />
-        <link rel="apple-touch-icon" href="/icon-192.png" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Jesus FOR ME" />
-      </Head>
-      <Component {...pageProps} />
-    </>
-  )
+    return res.status(200).json({
+      answer: data.content?.[0]?.text || "No response",
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Unknown error",
+    });
+  }
 }
