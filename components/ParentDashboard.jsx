@@ -25,7 +25,7 @@ export default function ParentDashboard() {
       const data = await res.json();
       console.log("DATA:", data);
 
-      setAnswer(data.answer);
+      setAnswer(typeof data.answer === "string" ? data.answer : "No valid response");
     } catch (err) {
       console.error("ERROR:", err);
     }
@@ -56,7 +56,7 @@ export default function ParentDashboard() {
       {answer && (
         <div>
           <h3>Suggested Answer:</h3>
-          <p>{answer}</p>
+          <p>{typeof answer === "string" ? answer : ""}</p>
         </div>
       )}
 
