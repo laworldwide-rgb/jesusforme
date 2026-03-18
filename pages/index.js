@@ -1,5 +1,12 @@
+import { useState } from "react";
 import ModeSelect from "../components/ModeSelect";
 
 export default function Home() {
-  return <ModeSelect onSelect={() => {}} />;
+  const [mode, setMode] = useState(null);
+
+  if (!mode) {
+    return <ModeSelect onSelect={setMode} />;
+  }
+
+  return <div>Mode: {mode}</div>;
 }
