@@ -29,14 +29,19 @@ Question: ${question}`,
 
     const data = await response.json();
 
+    if (!response.ok) {
+      return res.status(500).json({
+        error: data.error?.message || "API request failed",
+      });
+    }
+
     return res.status(200).json({
       answer: data.content?.[0]?.text || "No response",
     });
-  } catch (error) {
-  console.error("API ERROR:", error);
 
-  return res.status(500).json({
-    error: error.message || "Unknown error",
-  });
-}
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Unknown error",
+    });
+  }
 }
