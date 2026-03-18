@@ -12,7 +12,7 @@ export default function ParentDashboard() {
   setAnswer("");
 
   try {
-    const res = await fetch("/api/ask", {
+    const res = await fetch("/api/ask2", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
