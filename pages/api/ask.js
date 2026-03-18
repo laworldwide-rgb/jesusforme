@@ -15,18 +15,22 @@ export default async function handler(req, res) {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-3-5-haiku-20241022",
-        max_tokens: 300,
-        messages: [
-          {
-            role: "user",
-            content: `Explain this for a child in a simple, clear, theologically sound way:
+  model: "claude-3-5-haiku-20241022",
+  max_tokens: 300,
+  messages: [
+    {
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: `Explain this for a child in a simple, clear, theologically sound way:
 
 Question: ${question}`,
-          },
-        ],
-      }),
-    });
+        },
+      ],
+    },
+  ],
+}),
 
     const data = await response.json();
 
