@@ -1,3 +1,4 @@
+console.log("NEW API VERSION RUNNING"); 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -41,7 +42,7 @@ Question: ${question}`,
 
   } catch (error) {
     return res.status(500).json({
-      error: error.message || "Unknown error",
+      error: "NEW VERSION ERROR",
     });
   }
 }
