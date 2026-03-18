@@ -1,9 +1,3 @@
-import Anthropic from "@anthropic-ai/sdk";
-
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -12,24 +6,37 @@ export default async function handler(req, res) {
   const { question } = req.body;
 
   try {
-    const response = await client.messages.create({
-      model: "claude-3-haiku-20240307",
-      max_tokens: 300,
-      messages: [
-        {
-          role: "user",
-          content: `A parent is helping a child understand the Bible. 
-Explain this question in a simple, child-friendly, theologically sound way:
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: "claude-3-haiku-20240307",
+        max_tokens: 300,
+        messages: [
+          {
+            role: "user",
+            content: `Explain this for a child in a simple, clear, theologically sound way:
 
-Question: ${question}`
-        }
-      ]
+Question: ${question}`,
+          },
+        ],
+      }),
     });
 
-    res.status(200).json({
-      answer: response.content[0].text
+    const data = await response.json();
+
+    return res.status(200).json({
+      answer: data.content?.[0]?.text || "No response",
     });
   } catch (error) {
-    res.status(500).json({ error: "Something went wrong" });
+    console.error("API ERROR:", error);
+
+    return res.status(500).json({
+      error: "Server error",
+    });
   }
 }
