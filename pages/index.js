@@ -242,7 +242,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Jesus is For Me — with Sally Sunday</title>
+        <title>Jesus is For Me! · Sally Sunday</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
         <meta name="description" content="A Bible adventure app for kids and families with Sally Sunday"/>
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -252,7 +252,7 @@ export default function Home() {
         <meta name="theme-color" content="#2563EB"/>
         <link rel="apple-touch-icon" href="/icon-192.png"/>
         <meta name="apple-mobile-web-app-capable" content="yes"/>
-        <meta name="apple-mobile-web-app-title" content="Jesus is For Me"/>
+        <meta name="apple-mobile-web-app-title" content="Jesus is For Me!"/>
       </Head>
 
       <style jsx global>{`
