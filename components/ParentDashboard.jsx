@@ -6,6 +6,32 @@ export default function ParentDashboard() {
   const [loading, setLoading] = useState(false);
 
   const handleAsk = async () => {
+  console.log("CLICKED");
+
+  setLoading(true);
+  setAnswer("");
+
+  try {
+    const res = await fetch("/api/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ question }),
+    });
+
+    console.log("STATUS:", res.status);
+
+    const data = await res.json();
+    console.log("DATA:", data);
+
+    setAnswer(data.answer);
+  } catch (err) {
+    console.error("ERROR:", err);
+  }
+
+  setLoading(false);
+};
     setLoading(true);
     setAnswer("");
 
