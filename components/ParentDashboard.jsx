@@ -31,79 +31,114 @@ export default function ParentDashboard() {
 
     setLoading(false);
   };
-
+const actionBtn = {
+  padding: "12px",
+  borderRadius: "10px",
+  border: "1px solid #eee",
+  background: "white",
+  fontSize: "14px",
+  textAlign: "left",
+};
   return (
   <div style={{
-    maxWidth: "600px",
+    maxWidth: "420px",
     margin: "0 auto",
-    padding: "20px"
+    padding: "16px",
+    fontFamily: "system-ui, -apple-system, sans-serif"
   }}>
-      <h1>Parent Guide</h1>
 
-      <p>You don’t have to have all the answers. I’ll help you explain it simply.</p>
+    {/* HEADER */}
+    <div style={{ marginBottom: "20px" }}>
+      <h1 style={{ fontSize: "22px", marginBottom: "6px" }}>
+        Parent Guide
+      </h1>
+      <p style={{ color: "#666", fontSize: "14px" }}>
+        You don’t have to have all the answers. I’ll help you explain it simply.
+      </p>
+    </div>
 
+    {/* INPUT CARD */}
+    <div style={{
+      background: "white",
+      borderRadius: "14px",
+      padding: "14px",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+      marginBottom: "16px"
+    }}>
       <textarea
-  style={{
-    width: "100%",
-    minHeight: "100px",
-    padding: "12px",
-    borderRadius: "10px",
-    border: "1px solid #ddd",
-    fontSize: "16px",
-    marginBottom: "12px"
-  }}
+        style={{
+          width: "100%",
+          minHeight: "90px",
+          padding: "10px",
+          borderRadius: "10px",
+          border: "1px solid #ddd",
+          fontSize: "15px",
+          marginBottom: "12px"
+        }}
         placeholder="What did your child ask?"
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
       />
 
-      <br /><br />
-
       <button
-  onClick={handleAsk}
-  style={{
-    width: "100%",
-    padding: "14px",
-    borderRadius: "10px",
-    border: "none",
-    background: "#4f46e5",
-    color: "white",
-    fontSize: "16px",
-    fontWeight: "bold",
-    cursor: "pointer"
-  }}
->
+        onClick={handleAsk}
+        style={{
+          width: "100%",
+          padding: "12px",
+          borderRadius: "10px",
+          border: "none",
+          background: "#4f46e5",
+          color: "white",
+          fontSize: "15px",
+          fontWeight: "600"
+        }}
+      >
         {loading ? "Thinking..." : "Help me explain this"}
       </button>
-
-      <br /><br />
-
-<div>
-{answer && (
-<div style={{
-  marginTop: "20px",
-  padding: "16px",
-  borderRadius: "12px",
-  background: "#f9fafb",
-  border: "1px solid #eee"
-}}>
-    <h3 style={{ marginBottom: "8px" }}>What to say</h3>
-
-    <div style={{ whiteSpace: "pre-wrap", lineHeight: "1.5" }}>
-      {typeof answer === "string" ? answer : ""}
     </div>
+
+    {/* ANSWER CARD */}
+    {answer && (
+      <div style={{
+        background: "white",
+        borderRadius: "14px",
+        padding: "14px",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+        marginBottom: "16px"
+      }}>
+        <h3 style={{
+          fontSize: "16px",
+          marginBottom: "8px"
+        }}>
+          What to say
+        </h3>
+
+        <div style={{
+          whiteSpace: "pre-wrap",
+          lineHeight: "1.5",
+          fontSize: "14px"
+        }}>
+          {typeof answer === "string" ? answer : ""}
+        </div>
+      </div>
+    )}
+
+    {/* QUICK ACTIONS */}
+    <div>
+      <h2 style={{ fontSize: "16px", marginBottom: "10px" }}>
+        Quick Actions
+      </h2>
+
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px"
+      }}>
+        <button style={actionBtn}>📖 Read a Story</button>
+        <button style={actionBtn}>🧠 Practice a Verse</button>
+        <button style={actionBtn}>🙏 Say a Prayer</button>
+      </div>
+    </div>
+
   </div>
-)}
-  
-</div>
-
-      <hr />
-
-      <h2>Quick Actions</h2>
-
-      <button>Read a Story</button>
-      <button>Practice a Verse</button>
-      <button>Say a Prayer</button>
-    </div>
-  );
-}
+);
