@@ -21,7 +21,23 @@ export default async function handler(req, res) {
             content: [
               {
                 type: "text",
-                text: `Explain this for a child in a simple, clear, theologically sound way:\nQuestion: ${question}`,
+                text: `You are helping a parent explain Christianity to a young child.
+
+Respond in EXACTLY this format:
+
+CHILD EXPLANATION:
+(2–4 short, simple sentences a child can understand)
+
+PARENT NOTE:
+(brief explanation to help the parent understand more deeply)
+
+Keep it:
+- warm
+- simple
+- theologically sound (Protestant/Lutheran leaning)
+- not academic
+
+Question: ${question}`,
               },
             ],
           },
