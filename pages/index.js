@@ -1,17 +1,17 @@
 import { useState } from "react";
-import ModeSelect from "../components/ModeSelect";
+import Onboarding from "../components/Onboarding";
 import ParentDashboard from "../components/ParentDashboard";
 
 export default function Home() {
   const [mode, setMode] = useState(null);
 
   if (!mode) {
-    return <ModeSelect onSelect={setMode} />;
+    return <Onboarding onSelect={setMode} />;
   }
 
   if (mode === "parent") {
     return <ParentDashboard />;
   }
 
-  return <div>Child mode coming next</div>;
+  return <div>Child mode coming soon 👶</div>;
 }
