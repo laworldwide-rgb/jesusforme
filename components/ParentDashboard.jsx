@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 export default function ParentDashboard() {
@@ -8,6 +8,15 @@ export default function ParentDashboard() {
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const [simplifying, setSimplifying] = useState(false);
+  const [saved, setSaved] = useState([]);
+
+  // LOAD SAVED QUESTIONS
+  useEffect(() => {
+    const stored = localStorage.getItem("savedQuestions");
+    if (stored) {
+      setSaved(JSON.parse(stored));
+    }
+  }, []);
 
   // ASK
   const handleAsk = async () => {
@@ -30,6 +39,22 @@ export default function ParentDashboard() {
     }
 
     setLoading(false);
+  };
+
+  // SAVE
+  const handleSave = () => {
+    if (!question || !answer) return;
+
+    const newItem = {
+      question,
+      answer,
+      id: Date.now()
+    };
+
+    const updated = [newItem, ...saved];
+
+    setSaved(updated);
+    localStorage.setItem("savedQuestions", JSON.stringify(updated));
   };
 
   // SIMPLIFY
@@ -201,8 +226,12 @@ ${answer}`,
                     {simplifying ? "Simplifying..." : "Make it simpler"}
                   </button>
 
-                  <button onClick={handleSpeak}>
+                  <button onClick={handleSpeak} style={{ marginRight: "8px" }}>
                     🔊 Read aloud
+                  </button>
+
+                  <button onClick={handleSave}>
+                    💾 Save
                   </button>
                 </div>
 
@@ -255,6 +284,38 @@ ${answer}`,
           <button style={actionBtn}>🙏 Say a Prayer</button>
         </div>
       </div>
+
+      {/* SAVED QUESTIONS */}
+      {saved.length > 0 && (
+        <div style={{ marginTop: "20px" }}>
+          <h2 style={{ fontSize: "16px", marginBottom: "10px" }}>
+            Saved Questions
+          </h2>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {saved.map((item) => (
+              <div
+                key={item.id}
+                style={{
+                  padding: "12px",
+                  borderRadius: "10px",
+                  border: "1px solid #eee",
+                  background: "white",
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  setQuestion(item.question);
+                  setAnswer(item.answer);
+                }}
+              >
+                <div style={{ fontWeight: "600", fontSize: "14px" }}>
+                  {item.question}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
     </div>
   );
