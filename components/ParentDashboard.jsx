@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function ParentDashboard() {
+  const router = useRouter();
+
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
@@ -110,9 +113,25 @@ ${answer}`,
 
       {/* HEADER */}
       <div style={{ marginBottom: "20px" }}>
+
+        <button
+          onClick={() => router.back()}
+          style={{
+            marginBottom: "10px",
+            background: "none",
+            border: "none",
+            color: "#4f46e5",
+            fontSize: "14px",
+            cursor: "pointer"
+          }}
+        >
+          ← Back
+        </button>
+
         <h1 style={{ fontSize: "22px", marginBottom: "6px" }}>
           Parent Guide
         </h1>
+
         <p style={{ color: "#666", fontSize: "14px" }}>
           You don’t have to have all the answers. I’ll help you explain it simply.
         </p>
